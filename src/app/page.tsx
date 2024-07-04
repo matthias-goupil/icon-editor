@@ -1,38 +1,35 @@
-"use client";
-import IconCard from "@/components/IconCard";
 import IconGrid from "@/components/IconGrid";
-import { useState } from "react";
 import iconsData from "@/mocks/icons";
 import IconConfiguration from "@/components/IconConfiguration";
+import prisma from "@/lib/prisma";
+import SearchBar from "@/components/SearchBar";
 
-export default function Home() {
-  const [icons, setIcons] = useState(iconsData);
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { search?: string };
+}) {
+  const iconsData = await prisma.icon.findMany({
+    where: {
+      name: {
+        contains: searchParams.search || "",
+      },
+    },
+  });
+
   return (
-    <main className="h-screen mt-12 pb-12 flex gap-12">
-      <div className="rounded-xl  bg-white w-full p-12 relative">
-        <div className="flex gap-12">
-          <input
-            className="bg-slate-100 w-full rounded-xl px-8 py-4"
-            type="text"
-            placeholder="Rechercher"
-            onChange={(e) => {
-              const search = e.target.value;
-              if (search != "") {
-                setIcons(
-                  iconsData.filter(({ name }) => {
-                    return name.includes(search);
-                  })
-                );
-              } else {
-                setIcons(iconsData);
-              }
-            }}
-          />
-          <select className="bg-slate-100 w-60 rounded-xl px-8 py-4">
-            <option>Test</option>
-          </select>
-        </div>
-        <IconGrid icons={icons} />
+    <main className="h-screen mt-12 pb-12 flex flex-col gap-12">
+      <div className="flex gap-12">
+        
+      <SearchBar />
+      </div>
+
+      <div className="rounded-xl  bg-slate-50 w-full p-12 relative">
+        {iconsData.length ? (
+          <IconGrid icons={iconsData} />
+        ) : (
+          <p>Aucun correspond à la recherche</p>
+        )}
         <IconConfiguration />
       </div>
     </main>

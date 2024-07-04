@@ -17,12 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-slate-100 px-52")}>
-        <header className="bg-white w-full h-16 rounded-b-xl flex justify-between">
+      <body className={cn(inter.className, "bg-white px-52")}>
+        {/* <header className="bg-white w-full h-16 rounded-b-xl flex justify-between">
 
-        </header>
+        </header> */}
         {children}
-        <footer></footer>
+        {/* <footer></footer> */}
       </body>
     </html>
   );

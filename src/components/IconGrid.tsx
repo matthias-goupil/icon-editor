@@ -11,17 +11,18 @@ interface IconsGridProps {
 }
 
 function IconGrid({ icons }: IconsGridProps) {
-  const {setSelectedIcon} = useIconStore()
+  const {selectedIcon, setSelectedIcon} = useIconStore()
 
   return (
-    <div className="mt-12 w-full flex gap-4 flex-wrap">
+    <div className="w-full flex gap-4 flex-wrap">
       {icons.map((iconProps) => {
-        const { name, icon, id } = iconProps
+        const { name, svg, id } = iconProps
         return (
           <IconCard
             key={name + id}
             name={name}
-            icon={icon}
+            icon={svg}
+            selected={selectedIcon?.id === id}
             onClick={(e) => {
               e.preventDefault();
               setSelectedIcon(iconProps)
